@@ -2,12 +2,13 @@
 #include <iostream>
 
 #include <string>
-
+#include <time.h> 
+#include <iomanip>
 using namespace std ;
 
 
 
- void compare(  const string & mot1 , const string & motch ){
+ bool compare(  const string & mot1 , const string & motch ){
 
    int y = 0 ; 
 
@@ -19,9 +20,9 @@ using namespace std ;
     }
     
 
-    if(y == motch.size()  ) cout << "true" << endl ;
+    if(y == motch.size()  ) return true  ;
 
-    else cout << "false" << endl ;  
+   return false  ;  
 
 
 
@@ -34,8 +35,13 @@ using namespace std ;
 
 int main(){
 
-     string mot2 = "ouane" ; 
-     cout << "mot a comparer : " << mot2 << endl ; 
+     string mot2 ; 
+     bool res = false ; 
+
+     cout <<" Saiser le mot a chercher : " << endl ; 
+     cin >> mot2 ;  
+
+      
 
     FILE *f = fopen("fichier.txt", "r");
 
@@ -48,16 +54,21 @@ int main(){
     char mot[100];
     
 
-    
+    clock_t start = clock(); // Démarrer le chronomètre
 
 
 while (fscanf(f, "%99s", mot) == 1) {
-    cout << mot << "    " ;
-    compare(mot, mot2) ;
+    
+   if((res = compare(mot, mot2)) )  {cout << "le mot '" << mot2 << "' est trouver dans le ficheir " << endl ; break ;  } 
 }
+clock_t  end = clock ();
+double tmpR = (double)(end - start) / CLOCKS_PER_SEC * 1000000;
 
 
+if(!res) {cout << "le mot :  '" << mot2 << "'  n'est pas  trouver dans le ficheir "  << endl ; } 
 
+  cout << fixed << setprecision(2);
+ cout << "temps de recherche est  : " << tmpR <<  " microsecondes " << endl; 
 
  
 
